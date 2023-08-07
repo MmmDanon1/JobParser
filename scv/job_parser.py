@@ -84,9 +84,9 @@ class WorkingWithVacancies:
                 requirements = object['candidat']
                 if requirements == None or "":
                    requirements = "требований нет"
-                pay = object['payment_from']
+                pay = int(object['payment_from'])
                 if pay == None:
-                    pay = "сумма оплаты после собеседования"
+                    pay = 0
                 list_vacancy.append(cls(name, url, requirements, pay))
             except:
                 ""
@@ -108,9 +108,9 @@ class WorkingWithVacancies:
                 requirements = f"{item['experience']['name']}, {item['employment']['name']}"
                 if requirements == None or "":
                    requirements = "требований нет"
-                pay = item['salary']['from']
+                pay = int(item['salary']['from'])
                 if pay == None:
-                    pay = "сумма оплаты после собеседования"
+                    pay = 0
                 list_vacancy.append(cls(name, url, requirements, pay))
             except:
                 ""
@@ -154,37 +154,6 @@ class WorkingWithVacancies:
         """
         return self.pay >= other.pay
 
-    @classmethod
-    def job_selection(cls, list_vacancy: list[dict]):
-        """
-        метод сравнения вакансий по зарплате
-        :return: вакансия с максимальной оплатой
-        """
-        sorted_list_vacancy = sorted(list_vacancy, key=lambda x: x['pay'], reverse=True)
-        for list in sorted_list_vacancy[0:1]:
-            name = str(list["name"])
-            url = str(list['url'])
-            requirements = str(list['requirements'])
-            pay = int(list['pay'])
-
-        return cls(name, url, requirements, pay)
-
-    def salary_vacancies(self, list_vacancy: list[dict]) -> list[dict]:
-        """
-        метод сравнения вакансий по зарплате
-        :return: список вакансий отсортированных по оплате
-        """
-        sorted_list_vacancy = sorted(list_vacancy, key=lambda x: x['pay'], reverse=True)
-        return sorted_list_vacancy
-
-WW = WorkingWithVacancies(1, 2, 2, 3)
-print()
-# print(WW.job_selection([{"name": "1", "url": "2", "requirements": '3', "pay": 4}, {"name": "1", "url": "2", "requirements": "3", "pay": 5}, {"name": "1", "url": "2", "requirements": "3", "pay": 6}]))
-# print(WorkingWithVacancies("1", "2", "3", 4))
-pprint(WW.salary_vacancies([{"name": "1", "url": "2", "requirements": '3', "pay": 4},
-                           {"name": "1", "url": "2", "requirements": "3", "pay": 5},
-                           {"name": "1", "url": "2", "requirements": "3", "pay": 7},
-                           {"name": "2", "url": "2", "requirements": "3", "pay": 3}]))
 class SaveVacancies(ABC):
     """
     абстрактный класс для работы с сохранением вакансий в файл
