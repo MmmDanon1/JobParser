@@ -1,6 +1,5 @@
 import json
 import os
-from pprint import pprint
 
 import requests
 from abc import ABC, abstractmethod
@@ -20,6 +19,12 @@ class HHCollectingVacancies(CollectingVacancies):
     url_hh = "https://api.hh.ru/vacancies"
 
     def search_vacancy(self, keyword: str, search_quantity: int):
+        """
+        поиск вакансий
+        :param keyword:
+        :param search_quantity:
+        :return: вакансии по критериям пользователя
+        """
         params_hh = {"text": keyword,
                      "area": 113,
                      "page": 0,
@@ -62,6 +67,10 @@ class WorkingWithVacancies:
         self.requirements = requirements
 
     def __repr__(self):
+        """
+        отображает информацию об объекте класса
+        :return:
+        """
         return f'_{__class__.__name__}("{self.name}","{self.url}","{self.requirements}",{self.pay})'
 
     def __str__(self):
@@ -72,6 +81,12 @@ class WorkingWithVacancies:
 
     @classmethod
     def sj_vacancy(cls, list_vacancys, search_quantity):
+        """
+        класс - метод для списка объектов
+        :param list_vacancys:
+        :param search_quantity:
+        :return: список объектов
+        """
         list_vacancy = []
         for object in list_vacancys["objects"]:
             try:
@@ -96,6 +111,12 @@ class WorkingWithVacancies:
 
     @classmethod
     def hh_vacancy(cls, list_vacancys):
+        """
+        класс - метод для списка объектов
+        :param list_vacancys:
+        :param search_quantity:
+        :return: список объектов
+        """
         list_vacancy = []
         for item in list_vacancys['items']:
             try:
@@ -184,7 +205,6 @@ class SaveVacancies(ABC):
         """
         pass
 
-
 class JsonSaveVacancies(SaveVacancies):
     """
     класс для сохранения информации о вакансиях в JSON-файл.
@@ -196,15 +216,16 @@ class JsonSaveVacancies(SaveVacancies):
         :param **kwargs:
         :return: json-файл
         """
-        with open('vacancy.json', 'w') as f:
-            json.dump([list_vacancy], f)
+        open('vacancy.json', 'w').close()
+        with open('vacancy.json', 'w', encoding='utf-8') as f:
+            json.dump([list_vacancy], f, ensure_ascii=False)
 
     def get_vacancies(self):
         """
         получение вакансий из json-файла
         :return: вакансии из json-файла
         """
-        with open('vacancy.json', 'r') as f:
+        with open('vacancy.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
         return data
 
@@ -213,6 +234,13 @@ class JsonSaveVacancies(SaveVacancies):
         удаление вакансий с json-файла
         :return:
         """
-        open('vacancy.json', 'w').close()
+        open('vacancy.json','w').close()
+
+
+
+
+
+
+
 
 
