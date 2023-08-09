@@ -1,4 +1,4 @@
-from scv.job_parser import HHCollectingVacancies, SuperJobCollectingVacancies, WorkingWithVacancies, JsonSaveVacancies
+from scv.job_parser import SuperJobCollectingVacancies, WorkingWithVacancies, JsonSaveVacancies
 
 def test_SuperJobCollectingVacancies_search_vacancy():
     SJ = SuperJobCollectingVacancies()
@@ -36,12 +36,11 @@ def test_WorkingWithVacancies_add():
     assert WW3 <= WW4
     assert WW3 >= WW4
 
-
-def test_SaveVacancies(fixture_test_search_vacancy_hh):
+def test_SaveVacancies(fixture_test_WW_search_hh):
     JSV = JsonSaveVacancies()
-    JSV.add_json(fixture_test_search_vacancy_hh)
+    JSV.add_json(fixture_test_WW_search_hh)
     vac = JSV.get_vacancies()
-    assert vac == [fixture_test_search_vacancy_hh]
+    assert vac == fixture_test_WW_search_hh
 
 def test_SaveVacancies_delet(fixture_test_search_vacancy_hh):
     JSV = JsonSaveVacancies()

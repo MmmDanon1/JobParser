@@ -1,13 +1,5 @@
 import pytest
 
-from scv.job_parser import HHCollectingVacancies, WorkingWithVacancies
-
-@pytest.fixture
-def fixture_test_search_vacancy_hh():
-    HH = HHCollectingVacancies()
-    vac = HH.search_vacancy("python", 1)
-    return vac
-
 @pytest.fixture
 def fixture_ww_hh():
     vac = []
