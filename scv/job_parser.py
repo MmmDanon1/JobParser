@@ -10,6 +10,9 @@ class CollectingVacancies(ABC):
     """
     @abstractmethod
     def search_vacancy(self, keyword: str, search_quantity: int):
+        """
+        абстрактный класс для поиска вакансий
+        """
         pass
 
 class HHCollectingVacancies(CollectingVacancies):
@@ -87,27 +90,30 @@ class WorkingWithVacancies:
         :param search_quantity:
         :return: список объектов
         """
-        list_vacancy = []
-        for object in list_vacancys["objects"]:
-            try:
-                name = object['client']['title']
-                if name == None or "":
-                    name = "название фирмы не указано"
-                url = object['client']['url']
-                if url == None or "":
-                    url = "ссылка на вакансию не указана"
-                requirements = object['candidat']
-                if requirements == None or "":
-                   requirements = "требований нет"
-                pay = int(object['payment_from'])
-                if pay == None:
-                    pay = 0
-                list_vacancy.append(cls(name, url, requirements, pay))
-            except:
-                ""
-        if list_vacancy == []:
-            return "по данному запросу ничего не найдено"
-        return list_vacancy[0:search_quantity]
+        if list_vacancys == []:
+            print("Список доступных вакансий пуст")
+        else:
+            list_vacancy = []
+            for object in list_vacancys["objects"]:
+                try:
+                    name = object['client']['title']
+                    if name == None or "":
+                        name = "название фирмы не указано"
+                    url = object['client']['url']
+                    if url == None or "":
+                        url = "ссылка на вакансию не указана"
+                    requirements = object['candidat']
+                    if requirements == None or "":
+                       requirements = "требований нет"
+                    pay = int(object['payment_from'])
+                    if pay == None:
+                        pay = 0
+                    list_vacancy.append(cls(name, url, requirements, pay))
+                except:
+                    ""
+            if list_vacancy == []:
+                return "по данному запросу ничего не найдено"
+            return list_vacancy[0:search_quantity]
 
     @classmethod
     def hh_vacancy(cls, list_vacancys):
@@ -117,27 +123,30 @@ class WorkingWithVacancies:
         :param search_quantity:
         :return: список объектов
         """
-        list_vacancy = []
-        for item in list_vacancys['items']:
-            try:
-                name = item['employer']['name']
-                if name == None or "":
-                    name = "название фирмы не указано"
-                url = item['employer']['url']
-                if url == None or "":
-                    url = "ссылка на вакансию не указана"
-                requirements = f"{item['experience']['name']}, {item['employment']['name']}"
-                if requirements == None or "":
-                   requirements = "требований нет"
-                pay = int(item['salary']['from'])
-                if pay == None:
-                    pay = 0
-                list_vacancy.append(cls(name, url, requirements, pay))
-            except:
-                ""
-        if list_vacancy == []:
-            return "по данному запросу ничего не найдено"
-        return list_vacancy
+        if list_vacancys == []:
+            print("Список доступных вакансий пуст")
+        else:
+            list_vacancy = []
+            for item in list_vacancys['items']:
+                try:
+                    name = item['employer']['name']
+                    if name == None or "":
+                        name = "название фирмы не указано"
+                    url = item['employer']['url']
+                    if url == None or "":
+                        url = "ссылка на вакансию не указана"
+                    requirements = f"{item['experience']['name']}, {item['employment']['name']}"
+                    if requirements == None or "":
+                       requirements = "требований нет"
+                    pay = int(item['salary']['to'])
+                    if pay == None:
+                        pay = 0
+                    list_vacancy.append(cls(name, url, requirements, pay))
+                except:
+                    ""
+            if list_vacancy == []:
+                return "по данному запросу ничего не найдено"
+            return list_vacancy
 
     def __add__(self, other):
         """
@@ -216,7 +225,6 @@ class JsonSaveVacancies(SaveVacancies):
         :param **kwargs:
         :return: json-файл
         """
-        open('vacancy.json', 'w').close()
         with open('vacancy.json', 'w', encoding='utf-8') as f:
             json.dump([list_vacancy], f, ensure_ascii=False)
 
@@ -227,7 +235,7 @@ class JsonSaveVacancies(SaveVacancies):
         """
         with open('vacancy.json', 'r', encoding='utf-8') as f:
             data = json.load(f)
-        return data
+        return data[0]
 
     def delete_vacancies(self):
         """
@@ -235,6 +243,8 @@ class JsonSaveVacancies(SaveVacancies):
         :return:
         """
         open('vacancy.json','w').close()
+
+
 
 
 
